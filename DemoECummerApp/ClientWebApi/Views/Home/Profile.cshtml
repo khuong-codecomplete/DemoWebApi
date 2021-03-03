@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">$(document).ready(function () {
+            $('.container > div').not("#Home").hide();
+
+            $('nav li a').click(function () {
+                $('.container > div').hide();
+                $('.nav li').removeClass('active');
+
+                $(this).addClass('active');
+                $('#' + $(this).attr('data-div')).show();
+
+                // Load profile details.
+                if ($(this).attr('data-div') == 'Profile') {
+                    // Call API.
+                    var email = 'truongcongkhuong@gmail.com',
+                        password = '12345';
+
+                    $.ajax({
+                        url: 'https://localhost:44383/api/customers/11111111-1111-1111-1111-111111111111',
+                        type: "GET",
+                        contentType: "application/json",
+                        dataType: "json",
+                        headers: { 'Authorization': 'Basic ' + btoa(email + ':' + password) },
+                        success: function (result) {
+                            if (result) {
+                                for (var key in result) {
+                                    var value = result[key];
+
+                                    $('<div class="form-group">')
+                                        .append('<label class="control-label col-sm-2">' + key + '</label>')
+                                        .append('<div class="col-sm-4"><input type="text" class="form-control" value="' + value + '" /></div>')
+                                        .appendTo("#Profile .form-horizontal");
+                                }
+                            }
+                        },
+                        error: function (err) {
+                            if (err.status == 401) {
+                                alert("Either wrong email and password or you are not authorized to access the data!")
+                            }
+                        }
+                    });
+                }
+            });
+        });</script>
+</head>
+<body>
+    <div class="container">
+        <h2>Profile</h2>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtId">ID:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="txtId" name="Id">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtFirstName">First Name:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="txtFirstName" name="firstname">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtLastName">Last Name:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="txtLastName" name="lastname">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtEmail">Email:</label>
+                <div class="col-sm-3">
+                    <input type="email" class="form-control" id="txtEmail" name="email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="gender">Gender:</label>
+                <div class="col-sm-3">
+                    <label class="radio-inline"><input type="radio" value="M" name="gender">Male</label>
+                    <lable class="radio-inline"><input type="radio" value="F" name="gender">Female</lable>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtDob">Date of Birth:</label>
+                <div class="col-sm-3">
+                    <input type="date" class="form-control" id="txtDob" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtMobile">Mobile Number:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="txtMobile" placeholder="Enter mobile number" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtFax">Fax:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="txtFax" placeholder="Enter fax" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtPassword">Password:</label>
+                <div class="col-sm-3">
+                    <input type="password" class="form-control" id="txtPassword" name="pwd">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-success" id="btnRegister">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
